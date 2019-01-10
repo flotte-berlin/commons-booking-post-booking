@@ -1,0 +1,136 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: cb-admin-booking\n"
+"POT-Creation-Date: 2019-01-09 21:22+0100\n"
+"PO-Revision-Date: 2019-01-09 21:41+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: deutsch\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: __;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../templates/cb-post-booking-admin.php:2
+msgid "SETTINGS_PAGE_HEADER"
+msgstr "Commons Booking Post Booking - Einstellungen"
+
+#: ../templates/cb-post-booking-admin.php:4
+msgid "SETTINGS_DESCRIPTION"
+msgstr ""
+"Einstellungen für zusätzliche Commons  Booking Emails, die vor und nach "
+"Buchungszeiträumen versendet werden.<br> Folgende Template-Tags stehen zur "
+"Verfügung: {{FIRST_NAME}}, {{LAST_NAME}}, {{DATE_START}}, {{DATE_END}}, "
+"{{ITEM_NAME}}, {{LOCATION_NAME}}, {{HASH}}"
+
+#: ../templates/cb-post-booking-admin.php:12
+msgid "AHEAD_EMAIL_HEADER"
+msgstr "Email zur Buchungserinnerung"
+
+#: ../templates/cb-post-booking-admin.php:15
+msgid "AHEAD_EMAIL_DESCRIPTION"
+msgstr ""
+"An NutzerInnen wird X Tage vor dem Beginn des Buchungszeitraums eine "
+"Erinnerungmail versendet.<br>Mit dieser kann z.B. darum gebeten werden, die "
+"Buchung zu stornieren, falls doch keine Nutzung erfolgt."
+
+#: ../templates/cb-post-booking-admin.php:21
+#: ../templates/cb-post-booking-admin.php:63
+msgid "EMAIL_SUBJECT"
+msgstr "Email Betreff"
+
+#: ../templates/cb-post-booking-admin.php:22
+msgid "AHEAD_EMAIL_SUBJECT_PLACEHOLDER"
+msgstr "z.B. Buchungszeitraum steht bevor"
+
+#: ../templates/cb-post-booking-admin.php:25
+#: ../templates/cb-post-booking-admin.php:67
+msgid "EMAIL_CONTENT"
+msgstr "Inhalt der Email"
+
+#: ../templates/cb-post-booking-admin.php:26
+msgid "AHEAD_EMAIL_CONTENT_PLACEHOLDER"
+msgstr ""
+"z.B. <h2>Hallo {{FIRST_NAME}},</h2><p>dein Buchungszeitraum beginnt bald. "
+"Sofern absehbar ist, dass Du den gebuchten Gegenstand doch nicht nutzt, "
+"storniere bitte die Buchung, damit andere Menschen diesen evtl. nutzen "
+"können.</p>"
+
+#: ../templates/cb-post-booking-admin.php:30
+msgid "MIN_DAYS_SINCE_CREATION"
+msgstr "min. Tage nach Buchung"
+
+#: ../templates/cb-post-booking-admin.php:35
+msgid "DAYS_IN_ADVANCE"
+msgstr "Tage im Voraus"
+
+#: ../templates/cb-post-booking-admin.php:40
+#: ../templates/cb-post-booking-admin.php:72
+msgid "EMAIL_ACTIVE"
+msgstr "Email-Versand aktivieren?"
+
+#: ../templates/cb-post-booking-admin.php:44
+#: ../templates/cb-post-booking-admin.php:76
+msgid "EMAIL_ACTIVE_CONFIRM"
+msgstr "Ja, versende Email"
+
+#: ../templates/cb-post-booking-admin.php:45
+#: ../templates/cb-post-booking-admin.php:77
+msgid "AT"
+msgstr "um"
+
+#: ../templates/cb-post-booking-admin.php:47
+#: ../templates/cb-post-booking-admin.php:79
+msgid "CLOCK"
+msgstr "Uhr"
+
+#: ../templates/cb-post-booking-admin.php:54
+msgid "END_EMAIL_HEADER"
+msgstr "Email zum Buchungsende"
+
+#: ../templates/cb-post-booking-admin.php:57
+msgid "END_EMAIL_DESCRIPTION"
+msgstr ""
+"Das Plugin versendet täglich eine Email an alle NutzerInnen mit einer "
+"bestätigten Buchung, die beendet wurde."
+
+#: ../templates/cb-post-booking-admin.php:64
+msgid "END_EMAIL_SUBJECT_PLACEHOLDER"
+msgstr "z.B. Buchungszeitraum beendet"
+
+#: ../templates/cb-post-booking-admin.php:68
+msgid "END_EMAIL_CONTENT_PLACEHOLDER"
+msgstr ""
+"z.B. <h2>Hallo {{FIRST_NAME}},</h2><p>deine Buchung ist beendet. Wir hoffen, "
+"alles hat zu deiner Zufriedenheit funktioniert. Bitte teile uns doch mit, "
+"falls es Probleme gab.</p>"
+
+#: ../templates/cb-post-booking-admin.php:80
+msgid "FOR_BOOKINGS_FROM"
+msgstr "für Buchungen vom"
+
+#: ../templates/cb-post-booking-admin.php:82
+msgid "DAY_BEFORE"
+msgstr "Vortag"
+
+#: ../templates/cb-post-booking-admin.php:83
+msgid "CURRENT_DAY"
+msgstr "aktuellen Tag"
+
+#: ../classes/class-cb-post-booking-admin.php:15
+msgid "POST_BOOKING_SETTINGS_TITLE"
+msgstr "Post Booking Einstellungen"
+
+#: ../classes/class-cb-post-booking-admin.php:15
+msgid "POST_BOOKING_SETTINGS_MENU"
+msgstr "Commons Booking Post Booking"
+
+#: ../classes/class-cb-post-booking-admin.php:138
+msgid "Settings"
+msgstr ""
+
+#~ msgid "SETTINGS"
+#~ msgstr "Einstellungen"
