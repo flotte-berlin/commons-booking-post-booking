@@ -3,7 +3,7 @@
 Plugin Name:  Commons Booking Post Booking
 Plugin URI:   https://github.com/flotte-berlin/commons-booking-post-booking
 Description:  Erweitert das Commons Booking Plugin um das Versenden einer Email an Nutzer, deren Buchungszeitraum bevorsteht bzw. beendet wurde
-Version:      0.3.0
+Version:      0.3.1
 Author:       poilu
 Author URI:   https://github.com/poilu
 License:      GPLv2 or later
@@ -13,6 +13,7 @@ License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 define( 'CB_POST_BOOKING_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once( CB_POST_BOOKING_PATH . 'functions/translate.php' );
+require_once( CB_MAP_PATH . 'functions/is-plugin-active.php' );
 require_once( CB_POST_BOOKING_PATH . 'classes/class-cb-post-booking.php' );
 require_once( CB_POST_BOOKING_PATH . 'classes/class-cb-post-booking-admin.php' );
 

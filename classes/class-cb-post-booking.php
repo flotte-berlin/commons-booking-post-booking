@@ -104,7 +104,9 @@ Class CB_Post_Booking {
 
     foreach ($bookings as $booking) {
       if(strtotime($booking->booking_time) < $min_booking_date) {
-        $this->send_booking_mail_by_type('ahead', $booking);
+        if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
+          $this->send_booking_mail_by_type('ahead', $booking);
+        }
       }
     }
   }
@@ -120,9 +122,24 @@ Class CB_Post_Booking {
     $bookings = $this->fetch_confirmed_bookings_by_date('date_end', $date_end);
 
     foreach ($bookings as $booking) {
-      $this->send_booking_mail_by_type('end', $booking);
+      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
+        $this->send_booking_mail_by_type('end', $booking);
+      }
     }
 
+  }
+
+  /**
+  * checks, if there is an item usage restriction (total breakdown)
+  **/
+  public function is_item_usage_restricted($item_id, $date_start, $date_end) {
+    $is_restricted = false;
+
+    if(cb_map\is_plugin_active('commons-booking-item-usage-restriction.php') && method_exists('CB_Item_Usage_Restriction','is_item_restricted')) {
+      $is_restricted = CB_Item_Usage_Restriction::is_item_restricted($item_id, $date_start, $date_end);
+    }
+
+    return $is_restricted;
   }
 
   /**
