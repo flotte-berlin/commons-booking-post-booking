@@ -13,7 +13,7 @@ License URI:  https://www.gnu.org/licenses/gpl-2.0.html
 define( 'CB_POST_BOOKING_PATH', plugin_dir_path( __FILE__ ) );
 
 require_once( CB_POST_BOOKING_PATH . 'functions/translate.php' );
-require_once( CB_MAP_PATH . 'functions/is-plugin-active.php' );
+require_once( CB_POST_BOOKING_PATH . 'functions/is-plugin-active.php' );
 require_once( CB_POST_BOOKING_PATH . 'classes/class-cb-post-booking.php' );
 require_once( CB_POST_BOOKING_PATH . 'classes/class-cb-post-booking-admin.php' );
 
