@@ -135,7 +135,7 @@ Class CB_Post_Booking {
   public function is_item_usage_restricted($item_id, $date_start, $date_end) {
     $is_restricted = false;
 
-    if(cb_map\is_plugin_active('commons-booking-item-usage-restriction.php') && method_exists('CB_Item_Usage_Restriction','is_item_restricted')) {
+    if(cb_post_booking\is_plugin_active('commons-booking-item-usage-restriction.php') && method_exists('CB_Item_Usage_Restriction','is_item_restricted')) {
       $is_restricted = CB_Item_Usage_Restriction::is_item_restricted($item_id, $date_start, $date_end);
     }
 
