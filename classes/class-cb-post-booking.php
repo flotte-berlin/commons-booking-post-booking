@@ -116,7 +116,7 @@ Class CB_Post_Booking {
   **/
   public function check_ended_bookings() {
 
-    $day_string = $this->get_option('end_email_time') == 1 ? "-1 days" : "now";
+    $day_string = $this->get_option('end_email_day') == 1 ? "-1 days" : "now";
     $date_end = date('Y-m-d',strtotime($day_string));
 
     $bookings = $this->fetch_confirmed_bookings_by_date('date_end', $date_end);
