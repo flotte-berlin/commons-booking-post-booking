@@ -5,6 +5,9 @@ Class CB_Post_Booking {
   public $options;
   public $email_message;
 
+  const MAIL_BULK_SIZE = 10;
+  const MAIL_BULK_DELAY = 10;
+
   public function __construct() {
     $this->options = get_option('cb_post_booking_options', array());
 
@@ -88,6 +91,20 @@ Class CB_Post_Booking {
 
   }
 
+  public function send_booking_mails_by_type($type, $bookings) {
+    $count = 0;
+    foreach ($bookings as $booking) {
+      $count++;
+
+      $this->send_booking_mail_by_type($type, $booking);
+
+      if(($count % self::MAIL_BULK_SIZE) == 0) {
+        set_time_limit( self::MAIL_BULK_DELAY + self::MAIL_BULK_SIZE + 60 );
+        sleep(self::MAIL_BULK_DELAY);
+      }
+    }
+  }
+
   /**
   * check ahead bookings for that emails have to be sent and execute sending
   **/
@@ -102,13 +119,16 @@ Class CB_Post_Booking {
 
     $bookings = $this->fetch_confirmed_bookings_by_date('date_start', $day);
 
+    $valid_bookings = [];
     foreach ($bookings as $booking) {
       if(strtotime($booking->booking_time) < $min_booking_date) {
         if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
-          $this->send_booking_mail_by_type('ahead', $booking);
+          $valid_bookings[] = $booking;
         }
       }
     }
+
+    $this->send_booking_mails_by_type('ahead', $valid_bookings);
   }
 
   /**
@@ -121,11 +141,14 @@ Class CB_Post_Booking {
 
     $bookings = $this->fetch_confirmed_bookings_by_date('date_end', $date_end);
 
+    $valid_bookings = [];
     foreach ($bookings as $booking) {
       if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
-        $this->send_booking_mail_by_type('end', $booking);
+        $valid_bookings[] = $booking;
       }
     }
+
+    $this->send_booking_mails_by_type('end', $valid_bookings);
 
   }
 
