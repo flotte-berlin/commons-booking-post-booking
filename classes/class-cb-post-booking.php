@@ -14,16 +14,22 @@ Class CB_Post_Booking {
     //set email templates
     if(count($this->options) > 0) {
       $this->email_message = array(
-        'ahead' =>
-          array(
+        'ahead' => [
             'subject' => $this->get_option('ahead_email_subject', ''),
             'body' => $this->get_option('ahead_email_body', '')
-          ),
-        'end' =>
-          array(
+          ],
+        'end' => [
             'subject' => $this->get_option('end_email_subject', ''),
             'body' => $this->get_option('end_email_body', '')
-          )
+          ],
+        'location_start' => [
+          'subject' => $this->get_option('location_start_email_subject', ''),
+          'body' => $this->get_option('location_start_email_body', '')
+        ],
+        'location_end' => [
+          'subject' => $this->get_option('location_end_email_subject', ''),
+          'body' => $this->get_option('location_end_email_body', '')
+        ]
       );
     }
 
@@ -64,6 +70,17 @@ Class CB_Post_Booking {
       $this->activate_event('cb_ended_booking_check', $ended_date);
     }
 
+    $location_start_is_active = $this->get_option('location_start_email_is_active', false );
+    if($location_start_is_active) {
+      $started_date = $this->get_event_start_date_from_time($this->get_option('location_start_email_time'));
+      $this->activate_event('cb_location_start_booking_check', $started_date);
+    }
+
+    $location_end_is_active = $this->get_option('location_end_email_is_active', false );
+    if($location_end_is_active) {
+      $ended_date = $this->get_event_start_date_from_time($this->get_option('location_end_email_time'));
+      $this->activate_event('cb_location_end_booking_check', $ended_date);
+    }
   }
 
   /**
@@ -153,6 +170,47 @@ Class CB_Post_Booking {
   }
 
   /**
+  * check bookings that start(ed) and send emails to location
+  **/
+  public function check_location_start_bookings() {
+
+    $location_start_email_day = $this->get_option('location_start_email_day');
+    $day_string = $location_start_email_day == 2 ? "now" : "+1 days";
+    $date_start = date('Y-m-d',strtotime($day_string));
+
+    $bookings = $this->fetch_confirmed_bookings_by_date('date_start', $date_start);
+
+    $valid_bookings = [];
+    foreach ($bookings as $booking) {
+      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
+        $valid_bookings[] = $booking;
+      }
+    }
+
+    $this->send_booking_mails_by_type('location_start', $valid_bookings);
+  }
+
+  /**
+  * check bookings that end(ed) and send emails to location
+  **/
+  public function check_location_end_bookings() {
+    $location_end_email_day = $this->get_option('location_end_email_day');
+    $day_string = $location_end_email_day == 2 ? "now" : "+1 days";
+    $date_end = date('Y-m-d',strtotime($day_string));
+
+    $bookings = $this->fetch_confirmed_bookings_by_date('date_end', $date_end);
+
+    $valid_bookings = [];
+    foreach ($bookings as $booking) {
+      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
+        $valid_bookings[] = $booking;
+      }
+    }
+
+    $this->send_booking_mails_by_type('location_end', $valid_bookings);
+  }
+
+  /**
   * checks, if there is an item usage restriction (total breakdown)
   **/
   public function is_item_usage_restricted($item_id, $date_start, $date_end) {
@@ -208,9 +266,46 @@ Class CB_Post_Booking {
 
     $subject_template = ( $this->email_message[$type]['subject'] );
     $body_template = ( $this->email_message[$type]['body'] );
-    $mail_vars = $this->create_mail_vars($booking, $item, $location, $user_data);
+    if($type == 'location_start' || $type == 'location_end') {
+      if($this->is_location_post_booking_emails_active_for_booking($booking)) {
+        $to = $this->get_location_email_for_booking($booking);
+      }
+    }
+    else {
+      $to = $user_data->user_email;
+    }
 
-    $this->send_mail($user_data->user_email, $subject_template, $body_template, $mail_vars);
+    if(isset($to)) {
+      $mail_vars = $this->create_mail_vars($booking, $item, $location, $user_data);
+      $this->send_mail($to, $subject_template, $body_template, $mail_vars);
+    }
+  }
+
+  public function is_location_post_booking_emails_active_for_booking($booking) {
+    $cb_post_booking_emails = get_post_meta($booking->location_id, 'cb_post_booking_emails', true);
+
+    return $cb_post_booking_emails == "on";
+  }
+
+  public function get_location_email_for_booking($booking) {
+    
+    $contactinfo = get_post_meta($booking->location_id, 'commons-booking_location_contactinfo_text', true);
+    $emails = $this->find_email_address_in_string($contactinfo);
+
+    if(!empty($emails)) {
+      return $emails[0];
+    }
+    
+  }
+
+  function find_email_address_in_string($string) {
+
+    // try to match all allowed email address characters according to https://stackoverflow.com/questions/2049502/what-characters-are-allowed-in-an-email-address
+    //also used in Commons Booking public/cb-bookings/class-cb-data.php: get_location()
+    preg_match_all("/[a-zA-Z0-9.!#$%&'*+\-\/=?^_`{|}~]+@[a-zA-Z0-9.!#$%&'*+\-\/=?^_`{|}~]+/", $string, $matches);
+    $matches[0] = array_map(function($s) { return(trim($s, ".")); }, $matches[0]); // strip off leading or trailing dots
+
+    return $matches[0];
   }
 
   /**
@@ -255,8 +350,6 @@ Class CB_Post_Booking {
 
     wp_mail( $to, $subject, $body, $headers );
   }
-
-
 }
 
 ?>
