@@ -293,7 +293,7 @@ Class CB_Post_Booking {
     $emails = $this->find_email_address_in_string($contactinfo);
 
     if(!empty($emails)) {
-      return $emails[0];
+      return $emails;
     }
     
   }
@@ -348,7 +348,15 @@ Class CB_Post_Booking {
     $subject = $this->replace_email_template_tags( $subject_template, $mail_vars);
     $body = $this->replace_email_template_tags( $body_template, $mail_vars);
 
-    wp_mail( $to, $subject, $body, $headers );
+    if(is_array($to)) {
+      foreach($to as $t) {
+        wp_mail( $t, $subject, $body, $headers );
+      }
+    }
+    else {
+      wp_mail( $to, $subject, $body, $headers );
+    }
+    
   }
 }
 
