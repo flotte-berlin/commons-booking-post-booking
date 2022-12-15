@@ -182,7 +182,8 @@ Class CB_Post_Booking {
 
     $valid_bookings = [];
     foreach ($bookings as $booking) {
-      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
+      $user_data = get_userdata($booking->user_id);
+      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end) && !in_array('blocker', $user_data->roles)) {
         $valid_bookings[] = $booking;
       }
     }
@@ -202,7 +203,8 @@ Class CB_Post_Booking {
 
     $valid_bookings = [];
     foreach ($bookings as $booking) {
-      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end)) {
+      $user_data = get_userdata($booking->user_id);
+      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end) && !in_array('blocker', $user_data->roles)) {
         $valid_bookings[] = $booking;
       }
     }
