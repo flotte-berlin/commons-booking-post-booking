@@ -173,6 +173,7 @@ Class CB_Post_Booking {
   * check bookings that start(ed) and send emails to location
   **/
   public function check_location_start_bookings() {
+    $exception_roles = array_keys($this->get_option('location_email_role_exceptions', []));
 
     $location_start_email_day = $this->get_option('location_start_email_day');
     $day_string = $location_start_email_day == 2 ? "now" : "+1 days";
@@ -183,7 +184,7 @@ Class CB_Post_Booking {
     $valid_bookings = [];
     foreach ($bookings as $booking) {
       $user_data = get_userdata($booking->user_id);
-      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end) && !in_array('blocker', $user_data->roles)) {
+      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end) && !array_intersect($exception_roles, $user_data->roles)) {
         $valid_bookings[] = $booking;
       }
     }
@@ -195,6 +196,8 @@ Class CB_Post_Booking {
   * check bookings that end(ed) and send emails to location
   **/
   public function check_location_end_bookings() {
+    $exception_roles = array_keys($this->get_option('location_email_role_exceptions', []));
+    
     $location_end_email_day = $this->get_option('location_end_email_day');
     $day_string = $location_end_email_day == 2 ? "now" : "+1 days";
     $date_end = date('Y-m-d',strtotime($day_string));
@@ -204,7 +207,7 @@ Class CB_Post_Booking {
     $valid_bookings = [];
     foreach ($bookings as $booking) {
       $user_data = get_userdata($booking->user_id);
-      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end) && !in_array('blocker', $user_data->roles)) {
+      if(!$this->is_item_usage_restricted($booking->item_id, $booking->date_start, $booking->date_end) && !array_intersect($exception_roles, $user_data->roles)) {
         $valid_bookings[] = $booking;
       }
     }

@@ -177,6 +177,14 @@ Class CB_Post_Booking_Admin {
       $validated_input['location_end_email_day'] = 1;
     }
 
+    $user_roles = $this->get_all_user_roles();
+    $validated_input['location_email_role_exceptions'] = [];
+    foreach ($input['location_email_role_exceptions'] as $role_name => $value) {
+      if(in_array($role_name, array_keys($user_roles))) {
+        $validated_input['location_email_role_exceptions'][$role_name] = 'on';
+      }
+    }
+
     //activate/deactivate cron jobs
     $this->set_cronjobs($validated_input);
 
@@ -240,9 +248,17 @@ Class CB_Post_Booking_Admin {
   public function render_options_page() {
     $cb_post_booking = new CB_Post_Booking();
 
+    $user_roles = $this->get_all_user_roles();
+
     include_once( CB_POST_BOOKING_PATH . 'templates/cb-post-booking-admin.php');
   }
 
+  public function get_all_user_roles() {
+    global $wp_roles;
+    $roles = $wp_roles->roles;
+    
+    return $roles;
+  }
 
   /*** settings on location admin page ***/
 

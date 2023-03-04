@@ -159,11 +159,27 @@
                     </label><br/>
                 </td>
             </tr>
+        </table>
 
-            <tr>
-                <td><?php submit_button(); ?></td>
-            </tr>
+        <h2><?= cb_post_booking\__('LOCATION_EMAIL_EXCEPTIONS_HEADER', 'commons-booking-post-booking', 'exceptions for emails to locations') ?></h2>
 
+        <p><?= cb_post_booking\__('LOCATION_EMAIL_EXCEPTIONS_DESCRIPTION', 'commons-booking-post-booking', "roles for which no emails are sent to locations when they have booked") ?></p>
+
+        <table>
+          <tr>
+            <th><?= cb_post_booking\__('LOCATION_EMAIL_EXCEPTION_ROLES', 'commons-booking-post-booking', 'Exceptionional roles') ?>:</th>
+            <td>
+                <?php foreach($user_roles as $role_key => $role): ?>
+                  <input type="checkbox" name="cb_post_booking_options[location_email_role_exceptions][<?= $role_key ?>]" <?php echo isset($cb_post_booking->get_option('location_email_role_exceptions', [])[$role_key]) ? 'checked="checked"' : '' ?>><?= $role['name'] ?>
+               <?php endforeach ?>
+            </td>
+          </tr>
+        </table>
+
+        <table>
+        <tr>
+          <td><?php submit_button(); ?></td>
+        </tr>
         </table>
 
       </form>

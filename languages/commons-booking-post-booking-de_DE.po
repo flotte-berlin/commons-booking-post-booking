@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cb-admin-booking\n"
-"POT-Creation-Date: 2022-12-01 18:35+0100\n"
-"PO-Revision-Date: 2022-12-01 18:36+0100\n"
+"POT-Creation-Date: 2022-12-20 11:20+0100\n"
+"PO-Revision-Date: 2022-12-20 11:20+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -22,11 +22,11 @@ msgstr "Post Booking Einstellungen"
 msgid "POST_BOOKING_SETTINGS_MENU"
 msgstr "Commons Booking Post Booking"
 
-#: ../classes/class-cb-post-booking-admin.php:232
+#: ../classes/class-cb-post-booking-admin.php:240
 msgid "Settings"
 msgstr ""
 
-#: ../classes/class-cb-post-booking-admin.php:269
+#: ../classes/class-cb-post-booking-admin.php:285
 msgid "SEND_EMAILS_TO_LOCATION_CONTACT"
 msgstr "Sende Emails zu bevorstehenden & endenden Buchungen an den Standort"
 
@@ -198,6 +198,19 @@ msgid "LOCATION_END_EMAIL_CONTENT_PLACEHOLDER"
 msgstr ""
 "<h2>Hallo,</h2><p>die Ausleihe von {{ITEM_NAME}} ({{LOCATION_NAME}}) endet. "
 "Bitte stelle sicher, dass der Artikel ordnungsgemäß zurück gegeben wird."
+
+#: ../templates/cb-post-booking-admin.php:164
+msgid "LOCATION_EMAIL_EXCEPTIONS_HEADER"
+msgstr "Ausnahmen für Standort-Emails"
+
+#: ../templates/cb-post-booking-admin.php:166
+msgid "LOCATION_EMAIL_EXCEPTIONS_DESCRIPTION"
+msgstr ""
+"Rollen, für deren Buchung keine Emails an Standorte gesendet werden sollen."
+
+#: ../templates/cb-post-booking-admin.php:170
+msgid "LOCATION_EMAIL_EXCEPTION_ROLES"
+msgstr "Ausnahme-Rollen"
 
 #~ msgid "SETTINGS"
 #~ msgstr "Einstellungen"
