@@ -28,6 +28,10 @@ Class CB_Post_Booking_Admin {
     //var_dump($input);
     $validated_input = array();
 
+    //custom fields for template tags
+    $validated_input['location_note_custom_field'] = $input['location_note_custom_field'];
+    $validated_input['item_note_custom_field'] = $input['item_note_custom_field'];
+
     //ahead email
     $validated_input['ahead_email_subject'] = $input['ahead_email_subject'];
     $validated_input['ahead_email_body'] = $input['ahead_email_body'];

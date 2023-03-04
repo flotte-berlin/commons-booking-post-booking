@@ -247,6 +247,19 @@ Class CB_Post_Booking {
   * create variables used in emails template
   **/
   function create_mail_vars($booking, $item, $location, $user_data) {
+    $location_note_cf = $this->get_option('location_note_custom_field');
+    $item_note_cf = $this->get_option('item_note_custom_field');
+
+    $location_note = get_post_meta($booking->location_id, $location_note_cf, true);
+    $item_note = get_post_meta($booking->item_id, $item_note_cf, true);
+
+    if(is_array($location_note)) {
+      $location_note = '';
+    }
+
+    if(is_array($item_note)) {
+      $item_note = '';
+    }
 
     return array(
       'first_name' => $user_data->first_name,
@@ -255,7 +268,9 @@ Class CB_Post_Booking {
       'date_end' => date_i18n( get_option( 'date_format' ), strtotime($booking->date_end) ),
       'item_name' => $item->post_title,
       'location_name' => $location->post_title,
-      'hash' => $booking->hash
+      'hash' => $booking->hash,
+      'location_note' => $location_note,
+      'item_note' => $item_note
     );
   }
 
