@@ -9,7 +9,10 @@ Class CB_Post_Booking {
   const MAIL_BULK_DELAY = 10;
 
   public function __construct() {
-    $this->options = get_option('cb_post_booking_options', array());
+    $this->options = get_option('cb_post_booking_options', []);
+    if(!is_array($this->options)) {
+      $this->options = [];
+    }
 
     //set email templates
     if(count($this->options) > 0) {
