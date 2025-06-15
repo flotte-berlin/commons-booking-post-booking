@@ -1,13 +1,31 @@
 <div class="wrap">
       <h1><?= cb_post_booking\__('SETTINGS_PAGE_HEADER', 'commons-booking-post-booking', 'Commons Booking Post Booking - Settings') ?></h1>
 
-      <?= cb_post_booking\__('SETTINGS_DESCRIPTION', 'commons-booking-post-booking', 'Settings for additional Commons Booking emails, which are sent before and after the booking period.<br> The following template tags are available: {{FIRST_NAME}}, {{LAST_NAME}}, {{DATE_START}}, {{DATE_END}}, {{ITEM_NAME}}, {{LOCATION_NAME}}, {{HASH}}') ?>
+      <?= cb_post_booking\__('SETTINGS_DESCRIPTION', 'commons-booking-post-booking', 'Settings for additional Commons Booking emails, which are sent before and after the booking period.<br> The following template tags are available: {{FIRST_NAME}}, {{LAST_NAME}}, {{DATE_START}}, {{DATE_END}}, {{ITEM_NAME}}, {{LOCATION_NAME}}, {{HASH}}, {{LOCATION_NOTE}}, {{ITEM_NOTE}}') ?>
 
       <form method="post" action="options.php">
         <?php
           settings_fields( 'cb-post-booking-settings' );
           do_settings_sections( 'cb-post-booking-settings' );
         ?>
+
+        <h2><?= cb_post_booking\__('TEMPLATE_TAG_CONFIG_HEADER', 'commons-booking-post-booking', 'Configuration for custom template tags') ?></h2>
+
+        <p>
+          <?= cb_post_booking\__('TEMPLATE_TAG_CONFIG_DESCRIPTION', 'commons-booking-post-booking', "Here you can specify which custom fields are used to fill the following template tags.") ?>
+        </p>
+
+        <table>
+          <tr>
+            <th><?= cb_post_booking\__('LOCATION_NOTE', 'commons-booking-post-booking', '{{LOCATION_NOTE}}') ?>:</th>
+            <td><input type="text" placeholder="" name="cb_post_booking_options[location_note_custom_field]" value="<?php echo esc_attr( $cb_post_booking->get_option('location_note_custom_field') ); ?>" size="50" /></td>
+          </tr>
+
+          <tr>
+            <th><?= cb_post_booking\__('ITEM_NOTE', 'commons-booking-post-booking', '{{ITEM_NOTE}}') ?>:</th>
+            <td><input type="text" placeholder="" name="cb_post_booking_options[item_note_custom_field]" value="<?php echo esc_attr( $cb_post_booking->get_option('item_note_custom_field') ); ?>" size="50" /></td>
+          </tr>
+        </table>
 
         <h2><?= cb_post_booking\__('AHEAD_EMAIL_HEADER', 'commons-booking-post-booking', 'Email as booking reminder') ?></h2>
 
@@ -86,10 +104,100 @@
                 </td>
             </tr>
 
+        </table>
+
+        <h2><?= cb_post_booking\__('LOCATION_START_EMAIL_HEADER', 'commons-booking-post-booking', 'Email to locations when booking period starts') ?></h2>
+
+        <p>
+          <?= cb_post_booking\__('LOCATION_START_EMAIL_DESCRIPTION', 'commons-booking-post-booking', "Every day the plugin sends an email to all locations who have a confirmed booking that starts. This feature has to be activated for each location individually.") ?>
+        </p>
+
+        <table>
+
             <tr>
-                <td><?php submit_button(); ?></td>
+                <th><?= cb_post_booking\__('EMAIL_SUBJECT', 'commons-booking-post-booking', 'email subject') ?>:</th>
+                <td><input type="text" placeholder="<?= cb_post_booking\__('LOCATION_START_EMAIL_SUBJECT_PLACEHOLDER', 'commons-booking-post-booking', 'i.e. A booking period starts') ?>" name="cb_post_booking_options[location_start_email_subject]" value="<?php echo esc_attr( $cb_post_booking->get_option('location_start_email_subject') ); ?>" size="50" /></td>
+            </tr>
+            <tr>
+                <th><?= cb_post_booking\__('EMAIL_CONTENT', 'commons-booking-post-booking', 'email content') ?>:</th>
+                <td><textarea placeholder="<?= cb_post_booking\__('LOCATION_START_EMAIL_CONTENT_PLACEHOLDER', 'commons-booking-post-booking', "i.e. <h2>Hello,</h2><p>the booking of {{ITEM_NAME}} ({{LOCATION_NAME}}) will start soon. Please be aware that a user will pick up the item.</p>") ?>" name="cb_post_booking_options[location_start_email_body]" rows="10" cols="53"><?php echo esc_attr( $cb_post_booking->get_option('location_start_email_body') ); ?></textarea></td>
             </tr>
 
+            <tr>
+                <th><?= cb_post_booking\__('EMAIL_ACTIVE', 'commons-booking-post-booking', 'Activate email?') ?></th>
+                <td>
+                    <label>
+                        <input type="checkbox" id="cb_post_booking_end_email_is_active" name="cb_post_booking_options[location_start_email_is_active]" <?php echo esc_attr( $cb_post_booking->get_option('location_start_email_is_active') ) == 'on' ? 'checked="checked"' : ''; ?> />
+                        <?= cb_post_booking\__('EMAIL_ACTIVE_CONFIRM', 'commons-booking-post-booking', 'Yes, send email') ?>
+                        <?= cb_post_booking\__('AT', 'commons-booking-post-booking', 'at') ?>
+                        <input type="time" id="cb_post_booking_end_email_time" name="cb_post_booking_options[location_start_email_time]" value="<?php echo $cb_post_booking->get_option('location_start_email_time') ?>">
+                        <?= cb_post_booking\__('CLOCK', 'commons-booking-post-booking', "o'clock") ?>
+                        <?= cb_post_booking\__('FOR_BOOKINGS_FROM', 'commons-booking-post-booking', 'for bookings of') ?>
+                        <select name="cb_post_booking_options[location_start_email_day]">
+                          <option value="2" <?php echo $cb_post_booking->get_option('location_start_email_day') == 2 ? 'selected' : '' ?>><?= cb_post_booking\__('CURRENT_DAY', 'commons-booking-post-booking', 'the current day') ?></option>
+                          <option value="3" <?php echo $cb_post_booking->get_option('location_start_email_day') == 3 ? 'selected' : '' ?>><?= cb_post_booking\__('DAY_AFTER', 'commons-booking-post-booking', 'the day after') ?></option>
+                        </select>
+                    </label><br/>
+                </td>
+            </tr>
+
+        </table>
+
+        <h2><?= cb_post_booking\__('LOCATION_END_EMAIL_HEADER', 'commons-booking-post-booking', 'Email to locations when booking period ends') ?></h2>
+
+        <p>
+          <?= cb_post_booking\__('LOCATION_END_EMAIL_DESCRIPTION', 'commons-booking-post-booking', "Every day the plugin sends an email to all locations who have a confirmed booking that ends. This feature has to be activated for each location individually.") ?>
+        </p>
+
+        <table>
+
+            <tr>
+                <th><?= cb_post_booking\__('EMAIL_SUBJECT', 'commons-booking-post-booking', 'email subject') ?>:</th>
+                <td><input type="text" placeholder="<?= cb_post_booking\__('LOCATION_END_EMAIL_SUBJECT_PLACEHOLDER', 'commons-booking-post-booking', 'i.e. A booking period ends') ?>" name="cb_post_booking_options[location_end_email_subject]" value="<?php echo esc_attr( $cb_post_booking->get_option('location_end_email_subject') ); ?>" size="50" /></td>
+            </tr>
+            <tr>
+                <th><?= cb_post_booking\__('EMAIL_CONTENT', 'commons-booking-post-booking', 'email content') ?>:</th>
+                <td><textarea placeholder="<?= cb_post_booking\__('LOCATION_END_EMAIL_CONTENT_PLACEHOLDER', 'commons-booking-post-booking', "i.e. <h2>Hello,</h2><p>the booking of {{ITEM_NAME}} ({{LOCATION_NAME}}) has ended. Please ensure that it is returned by the user</p>") ?>" name="cb_post_booking_options[location_end_email_body]" rows="10" cols="53"><?php echo esc_attr( $cb_post_booking->get_option('location_end_email_body') ); ?></textarea></td>
+            </tr>
+
+            <tr>
+                <th><?= cb_post_booking\__('EMAIL_ACTIVE', 'commons-booking-post-booking', 'Activate email?') ?></th>
+                <td>
+                    <label>
+                        <input type="checkbox" id="cb_post_booking_end_email_is_active" name="cb_post_booking_options[location_end_email_is_active]" <?php echo esc_attr( $cb_post_booking->get_option('location_end_email_is_active') ) == 'on' ? 'checked="checked"' : ''; ?> />
+                        <?= cb_post_booking\__('EMAIL_ACTIVE_CONFIRM', 'commons-booking-post-booking', 'Yes, send email') ?>
+                        <?= cb_post_booking\__('AT', 'commons-booking-post-booking', 'at') ?>
+                        <input type="time" id="cb_post_booking_end_email_time" name="cb_post_booking_options[location_end_email_time]" value="<?php echo $cb_post_booking->get_option('location_end_email_time') ?>">
+                        <?= cb_post_booking\__('CLOCK', 'commons-booking-post-booking', "o'clock") ?>
+                        <?= cb_post_booking\__('FOR_BOOKINGS_FROM', 'commons-booking-post-booking', 'for bookings of') ?>
+                        <select name="cb_post_booking_options[location_end_email_day]">
+                          <option value="2" <?php echo $cb_post_booking->get_option('location_end_email_day') == 2 ? 'selected' : '' ?>><?= cb_post_booking\__('CURRENT_DAY', 'commons-booking-post-booking', 'the current day') ?></option>
+                          <option value="3" <?php echo $cb_post_booking->get_option('location_end_email_day') == 3 ? 'selected' : '' ?>><?= cb_post_booking\__('DAY_AFTER', 'commons-booking-post-booking', 'the day after') ?></option>
+                        </select>
+                    </label><br/>
+                </td>
+            </tr>
+        </table>
+
+        <h2><?= cb_post_booking\__('LOCATION_EMAIL_EXCEPTIONS_HEADER', 'commons-booking-post-booking', 'exceptions for emails to locations') ?></h2>
+
+        <p><?= cb_post_booking\__('LOCATION_EMAIL_EXCEPTIONS_DESCRIPTION', 'commons-booking-post-booking', "roles for which no emails are sent to locations when they have booked") ?></p>
+
+        <table>
+          <tr>
+            <th><?= cb_post_booking\__('LOCATION_EMAIL_EXCEPTION_ROLES', 'commons-booking-post-booking', 'Exceptionional roles') ?>:</th>
+            <td>
+                <?php foreach($user_roles as $role_key => $role): ?>
+                  <input type="checkbox" name="cb_post_booking_options[location_email_role_exceptions][<?= $role_key ?>]" <?php echo isset($cb_post_booking->get_option('location_email_role_exceptions', [])[$role_key]) ? 'checked="checked"' : '' ?>><?= $role['name'] ?>
+               <?php endforeach ?>
+            </td>
+          </tr>
+        </table>
+
+        <table>
+        <tr>
+          <td><?php submit_button(); ?></td>
+        </tr>
         </table>
 
       </form>
